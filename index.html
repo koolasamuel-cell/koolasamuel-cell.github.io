@@ -360,16 +360,15 @@ if(Math.hypot(x-p.x,y-p.y)<40){
         if(currentPlayerPawns.length < 3) { // Limit to 3 pawns per player
             playClick(300,0.15);
             stateStack.push([playerPawns.slice(),computerPawns.slice()]);
-            if(currentTurn==="player1") playerPawns.push(i);
-            else computerPawns.push(i);
-            
-            // Check if placement phase is complete
-`            if(playerPawns.length === 3 && computerPawns.length === 3) {
-                gameState = "moving";
-            }
-            endTurn();
-        }
-    }
+           if(currentTurn==="player1") playerPawns.push(i);
+else computerPawns.push(i);
+
+// Check if placement phase is complete
+if(playerPawns.length === 3 && computerPawns.length === 3) {
+    gameState = "moving";
+}
+endTurn();
+
     
     // MOVEMENT PHASE - Move existing pawns
     else if(gameState==="moving") {
@@ -660,3 +659,4 @@ function nextLevel() {
 </body>
 
 </html>
+
