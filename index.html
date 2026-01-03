@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KWASIADA FRANKAA - Ashanti Edition</title>
+<style>
+:root {
+    --ashanti-gold: #FFD700;
+    --ashanti-green: #00AA00;
+    --ashanti-black: #000000;
+    --dark-bg: #0a0a0a;
+    --panel-bg: #1a1a1a;
+    --input-bg: #121212;
+}
+
+body {
+    margin: 0;
+    background-color: var(--dark-bg);
+    color: white;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header */
+#header {
+    width: 100%;
+    padding: 20px 0;
+    background: var(--ashanti-black);
+    border-bottom: 4px solid var(--ashanti-gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+}
+.flag-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.flag-text { color: white; font-weight: bold; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+.ashanti-flag {
+    width: 85px; height: 52px; border: 2px solid #333;
+    display: flex; flex-direction: column; border-radius: 4px; overflow: hidden; position: relative;
+}
+.stripe { flex: 1; width: 100%; position: relative; }
+.golden-stool {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 24px; height: 16px; background: var(--ashanti-gold);
+    clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 80% 20%, 80% 70%, 100% 70%, 100% 100%, 0% 100%, 0% 70%, 20% 70%, 20% 20%, 0% 20%);
+}
+#title { font-size: clamp(24px, 5vw, 38px); color: var(--ashanti-gold); text-shadow: 2px 2px 0 #000; margin: 0; letter-spacing: 3px; }
+
+/* 3D Interface */
+.container { width: 95%; max-width: 600px; margin-top: 25px; padding-bottom: 50px; perspective: 1000px; }
+#gameCanvas {
+    background: #ccc; border: 10px solid #222; border-radius: 10px;
+    width: 600px; height: 600px; /* FIXED SIZE */
+    margin: 20px 0;
+    transform: rotateX(20deg); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.5s ease;
+}
+#gameCanvas:hover { transform: rotateX(10deg); }
+.panel-3d {
+    background: var(--panel-bg); padding: 25px; border-radius: 20px;
+    border: 2px solid #333; box-shadow: 0 15px 35px rgba(0,0,0,0.5); text-align: center;
+}
+.section-title { color: var(--ashanti-gold); font-size: 1.2rem; margin: 25px 0 15px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Buttons & Inputs */
+.mode-toggle { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+.mode-btn {
+    flex: 1; padding: 12px; border-radius: 10px; border: none; background: #333; color: #888;
+    cursor: pointer; font-weight: bold; transition: 0.3s;
+}
+.mode-btn.active { background: var(--ashanti-gold); color: black; }
+
+input, select {
+    width: 90%; padding: 12px; margin: 8px 0; background: var(--input-bg);
+    border: 1px solid #333; border-radius: 8px; color: white; font-size: 16px;
+}
+.diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.diff-card { background: #222; padding: 15px 5px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
+.diff-card.active { border-color: var(--ashanti-gold); background: #2a2a2a; }
+.start-btn {
+    width: 100%; padding: 18px; background: var(--ashanti-green); color: white;
+    border: none; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer;
+    margin-top: 20px; box-shadow: 0 4px 0 #006400;
+}
+
+/* Game Over Buttons */
+.game-over-buttons {
+    display: none;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.game-over-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.replay-btn {
+    background: var(--ashanti-green);
+    color: white;
+}
+.menu-btn {
+    background: var(--ashanti-gold);
+    color: black;
+}
+.next-btn {
+    background: #FF6B35;
+    color: white;
+}
+
+/* Celebration */
+#celebration-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 100; display: none;
+}
+.balloon {
+    position: absolute; bottom: -100px; font-size: 40px;
+    animation: floatUp 4s linear forwards;
+}
+@keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
+.hidden { display: none !important; }
+#status { font-size: 24px; color: var(--ashanti-gold); margin-bottom: 10px; }
+footer { margin-top: auto; padding: 30px; font-size: 12px; color: #555; text-align: center; }
+</style>
+</head>
+<body onclick="initAudio();">
+
+<div id="celebration-overlay"></div>
+
+<div id="header">
+    <div class="flag-box">
+        <span class="flag-text">Ashanti</span>
+        <div class="ashanti-flag">
+            <div class="stripe" style="background:var(--ashanti-gold)"></div>
+            <div class="stripe" style="background:var(--ashanti-black)">
+                <div class="golden-stool"></div>
+            </div>
+            <div class="stripe" style="background:var(--ashanti-green)"></div>
+        </div>
+    </div>
+    <h1 id="title">KWASIADA FRANKAA</h1>
+</div>
+
+<div class="container" id="menu-ui">
+    <div class="panel-3d">
+        <div class="mode-toggle">
+            <button class="mode-btn active" id="btnComp" onclick="setMode('vsComp')">vs Computer</button>
+            <button class="mode-btn" id="btnHuman" onclick="setMode('vsHuman')">vs Human</button>
+        </div>
+
+        <input id="p1Name" onchange="updateStarterOptions()" placeholder="Player Name" value="Koola">
+        <input id="p2Name" onchange="updateStarterOptions()" class="hidden" placeholder="Player 2 Name" value="Nana">
+
+        <div class="section-title">Difficulty Level</div>
+        <div class="diff-grid">
+            <div class="diff-card active" id="d1" onclick="setDiff(1,'d1')">⭐ Okukudurufo</div>
+            <div class="diff-card" id="d6" onclick="setDiff(6,'d6')">🛡️ Okofo</div>
+            <div class="diff-card" id="d20" onclick="setDiff(20,'d20')">⚔️ Osagyefo</div>
+        </div>
+
+        <select id="starterSelect">
+            <option value="player1">Koola Starts</option>
+            <option value="player2">Opponent Starts</option>
+        </select>
+
+        <button class="start-btn" onclick="startGame()">START MATCH</button>
+    </div>
+
+  <div class="history-panel" style="text-align: center;">
+    <h3 style="background-color: var(--ashanti-gold); color: black; display: inline-block; padding: 8px 16px; border-radius: 6px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-bottom: 6px;">
+        ABOUT KWASIADA FRANKAA
+    </h3>
+    <div style="background-color: var(--ashanti-black); color: white; padding: 12px 15px; border-radius: 8px; font-family: Arial, sans-serif; line-height: 1.5; text-align: left;">
+        <p><strong>Kwasiada Frankaa</strong> is a traditional Ashanti strategy board game. "<strong>Kwasiada</strong>" refers to Sunday, while "<strong>Frankaa</strong>" means flag—a symbol of leadership or victory in traditional Ashanti contexts.</p>
+        <p>The game centers around a central flag (frankaa) that players must protect, capture, or use strategically to win.</p>
+
+        <div id="moreText" style="display: none;">
+            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Origin & History:</strong> Kwasiada Frankaa originated in Ashanti communities in the late 19th century (around the 1880s–1890s) and has been preserved through oral tradition. It was traditionally played during village evenings, festivals, or moonlight gatherings, serving both as entertainment and as a way to develop mental sharpness.</p>
+
+            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">How Children Played:</strong> To create the board, children either used <strong>charcoal to draw lines</strong> and folded paper, stones, or broken broomsticks as pawns, <strong>or</strong> they sometimes used sticks to draw lines on the ground, often in <strong>sand or clay</strong>, using <strong>stones to represent the three pawns</strong>. The game served both as entertainment and as a tool to sharpen strategic thinking from a young age.</p>
+
+            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Gameplay & Rules:</strong> The objective is to <strong>align all pawns in a straight line</strong>—vertically, horizontally, or diagonally. Players take turns moving one pawn at a time, and <strong>no pawn may be skipped or jumped</strong>. The first player to align all their pawns wins the round.</p>
+
+            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Cultural Significance:</strong> Kwasiada Frankaa teaches <strong>alertness, timing, strategic thinking, patience, and problem-solving</strong>, while promoting <strong>friendly competition and community bonding</strong>. Modern adaptations of the game help preserve Ashanti heritage and introduce it to younger generations.</p>
+
+            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Notable Players:</strong> Samuel Attah-Nti, who developed a modern version of the game, recalls playing it as a child.</p>
+        </div>
+
+        <button id="readMoreBtn" onclick="toggleReadMore()" style="margin-top: 10px; background-color: var(--ashanti-gold); color: black; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+            Read More
+        </button>
+
+        <p style="margin-top: 10px;"><small>Source: "Asante Traditional Games and Play Culture" (Oral Accounts, 2020, Kwame Nkrumah University of Science and Technology Cultural Studies Department).</small></p>
+    </div>
+</div>
+
+<script>
+function toggleReadMore() {
+    const moreText = document.getElementById("moreText");
+    const btn = document.getElementById("readMoreBtn");
+    if (moreText.style.display === "none") {
+        moreText.style.display = "block";
+        btn.innerText = "Read Less";
+    } else {
+        moreText.style.display = "none";
+        btn.innerText = "Read More";
+    }
+}
+</script>
+<div class="container hidden" id="game-ui" style="text-align:center;">
+    <div id="status">Koola's Turn</div>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div style="display:flex;gap:10px;justify-content:center;">
+        <button class="mode-btn" style="background:white;color:black;" onclick="undoMove()">UNDO</button>
+        <button class="mode-btn" style="background:#a00;color:white;" onclick="location.reload()">QUIT</button>
+    </div>
+    
+    <div class="game-over-buttons" id="gameOverButtons">
+        <button class="game-over-btn replay-btn" onclick="replayGame()">REPLAY</button>
+        <button class="game-over-btn menu-btn" onclick="goToMainMenu()">MAIN MENU</button>
+        <button class="game-over-btn next-btn hidden" id="nextLevelBtn" onclick="nextLevel()">NEXT LEVEL</button>
+    </div>
+</div>
+
+<footer>
+&copy; 2026 Koola &bull; Kwasiada Frankaa<br>
+Preserving Ashanti Cultural Heritage Through Digital Gaming.
+</footer>
+
+<script>
+/* --- AUDIO --- */
+let audioInitialized=false, audioCtx, chimeSound;
+function initAudio(){if(audioInitialized) return;
+audioInitialized=true; audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+let osc=audioCtx.createOscillator(), g=audioCtx.createGain();
+osc.frequency.setValueAtTime(440,audioCtx.currentTime);
+g.gain.setValueAtTime(0.001,audioCtx.currentTime);
+osc.connect(g); g.connect(audioCtx.destination);
+osc.start(); osc.stop(audioCtx.currentTime+0.01);
+chimeSound=new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+chimeSound.volume = 1.0; // Maximum volume
+}
+function playClick(f,d){if(!audioCtx) return;
+let o=audioCtx.createOscillator(), g=audioCtx.createGain();
+o.type="sine"; o.frequency.setValueAtTime(f,audioCtx.currentTime);
+g.gain.setValueAtTime(0.3,audioCtx.currentTime); // Increased from 0.1 to 0.3
+g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);
+o.connect(g); g.connect(audioCtx.destination);
+o.start(); o.stop(audioCtx.currentTime+d);
+}
+
+/* --- TEXT TO SPEECH --- */
+function speakResultWithChime(message){
+    try {
+        if(chimeSound) chimeSound.play().catch(e=>console.log("Chime failed:",e));
+        if('speechSynthesis' in window){
+            const utterance = new SpeechSynthesisUtterance(message);
+            
+            // Set female voice preference
+            const voices = speechSynthesis.getVoices();
+            const femaleVoice = voices.find(voice => 
+                voice.name.toLowerCase().includes('female') ||
+                voice.name.toLowerCase().includes('woman') ||
+                voice.name.toLowerCase().includes('zira') ||
+                voice.name.toLowerCase().includes('hazel') ||
+                voice.name.toLowerCase().includes('karen') ||
+                voice.name.toLowerCase().includes('samantha') ||
+                voice.name.toLowerCase().includes('victoria') ||
+                voice.name.toLowerCase().includes('susan')
+            );
+            
+            if(femaleVoice) {
+                utterance.voice = femaleVoice;
+            }
+            
+            utterance.rate = 0.8;
+            utterance.pitch = 1.2; // Slightly higher pitch for female voice
+            utterance.volume = 1.0;
+            speechSynthesis.speak(utterance);
+        }
+    } catch(e) {
+        console.log("Speech failed:",e);
+    }
+}
+
+/* --- READ MORE TOGGLE --- */
+function toggleReadMore() {
+    const moreText = document.getElementById("moreText");
+    const btn = document.getElementById("readMoreBtn");
+    if (moreText.style.display === "none") {
+        moreText.style.display = "block";
+        btn.innerText = "Read Less";
+    } else {
+        moreText.style.display = "none";
+        btn.innerText = "Read More";
+    }
+}
+
+/* --- GAME LOGIC --- */
+const canvas=document.getElementById("gameCanvas"), ctx=canvas.getContext("2d");
+const points=[{x:100,y:100},{x:300,y:100},{x:500,y:100},{x:100,y:300},{x:300,y:300},{x:500,y:300},{x:100,y:500},{x:300,y:500},{x:500,y:500}];
+const links=[[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[0,3],[3,6],[1,4],[4,7],[2,5],[5,8],[0,4],[2,4],[6,4],[8,4]];
+const winLines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let playerPawns=[], computerPawns=[], stateStack=[], gameMode="vsComp", currentTurn="player1", gameState="menu", diffLevel=1;
+let selectedPawn=-1; // For movement phase
+
+function setMode(m){playClick(500,0.1); gameMode=m;
+document.getElementById("btnComp").classList.toggle("active",m==='vsComp');
+document.getElementById("btnHuman").classList.toggle("active",m==='vsHuman');
+document.getElementById("p2Name").classList.toggle("hidden",m==='vsComp'); updateStarterOptions();}
+function updateStarterOptions(){
+const p1=document.getElementById("p1Name").value;
+const p2=gameMode==="vsComp"?"Opponent":document.getElementById("p2Name").value;
+document.getElementById("starterSelect").innerHTML=`<option value="player1">${p1} Starts</option><option value="player2">${p2} Starts</option>`;}
+function setDiff(val,id){playClick(600,0.1); diffLevel=val; document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('active')); document.getElementById(id).classList.add('active');}
+
+function startGame(){
+playClick(800,0.2);
+gameState="placing"; playerPawns=[]; computerPawns=[]; stateStack=[]; selectedPawn=-1;
+currentTurn=document.getElementById("starterSelect").value;
+document.getElementById("menu-ui").classList.add("hidden");
+document.getElementById("game-ui").classList.remove("hidden");
+document.getElementById("gameOverButtons").style.display = "none";
+draw();
+updateStatus();
+if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn,800);
+}
+
+/* CANVAS CLICK LOGIC */
+canvas.onclick=(e)=>{
+if(gameState==="ended") return;
+const rect=canvas.getBoundingClientRect();
+const x=(e.clientX-rect.left)*(600/rect.width);
+const y=(e.clientY-rect.top)*(600/rect.height);
+points.forEach((p,i)=>{
+if(Math.hypot(x-p.x,y-p.y)<40){
+
+    // PLACEMENT PHASE - Each player can place max 3 pawns
+    if(gameState==="placing" && !playerPawns.includes(i) && !computerPawns.includes(i)){
+        const currentPlayerPawns = currentTurn==="player1" ? playerPawns : computerPawns;
+        if(currentPlayerPawns.length < 3) { // Limit to 3 pawns per player
+            playClick(300,0.15);
+            stateStack.push([playerPawns.slice(),computerPawns.slice()]);
+            if(currentTurn==="player1") playerPawns.push(i);
+            else computerPawns.push(i);
+            
+            // Check if placement phase is complete
+`            if(playerPawns.length === 3 && computerPawns.length === 3) {
+                gameState = "moving";
+            }
+            endTurn();
+        }
+    }
+    
+    // MOVEMENT PHASE - Move existing pawns
+    else if(gameState==="moving") {
+        const currentPlayerPawns = currentTurn==="player1" ? playerPawns : computerPawns;
+        
+        if(selectedPawn === -1) {
+            // Select a pawn to move
+            if(currentPlayerPawns.includes(i)) {
+                selectedPawn = i;
+                playClick(400, 0.1);
+                draw(); // Redraw to show selection
+            }
+        } else {
+            // Move selected pawn to new position
+            if(!playerPawns.includes(i) && !computerPawns.includes(i) && isValidMove(selectedPawn, i)) {
+                playClick(300,0.15);
+                stateStack.push([playerPawns.slice(),computerPawns.slice()]);
+                
+                if(currentTurn==="player1") {
+                    const idx = playerPawns.indexOf(selectedPawn);
+                    playerPawns[idx] = i;
+                } else {
+                    const idx = computerPawns.indexOf(selectedPawn);
+                    computerPawns[idx] = i;
+                }
+                selectedPawn = -1;
+                endTurn();
+            } else if(currentPlayerPawns.includes(i)) {
+                // Select different pawn
+                selectedPawn = i;
+                playClick(400, 0.1);
+                draw();
+            } else {
+                // Invalid move, deselect
+                selectedPawn = -1;
+                draw();
+            }
+        }
+    }
+}});};
+
+// Check if move is valid (adjacent positions only)
+function isValidMove(from, to) {
+    const fromPoint = points[from];
+    const toPoint = points[to];
+    
+    // Check if positions are connected by a link
+    return links.some(link => 
+        (link[0] === from && link[1] === to) || 
+        (link[1] === from && link[0] === to)
+    );
+}
+
+function draw(){
+ctx.clearRect(0,0,600,600);
+ctx.strokeStyle="#444"; ctx.lineWidth=10;
+links.forEach(l=>{ctx.beginPath(); ctx.moveTo(points[l[0]].x,points[l[0]].y); ctx.lineTo(points[l[1]].x,points[l[1]].y); ctx.stroke();});
+points.forEach(p=>{ctx.fillStyle="#888"; ctx.beginPath(); ctx.arc(p.x,p.y,14,0,7); ctx.fill();});
+
+// Draw selected pawn with highlight
+playerPawns.forEach(p=>{
+    if(p === selectedPawn && currentTurn === "player1") {
+        drawSelectedPawn(p,"#FFD700","#B8860B");
+    } else {
+        drawPawn(p,"#FFD700","#B8860B");
+    }
+});
+computerPawns.forEach(p=>{
+    if(p === selectedPawn && currentTurn === "player2") {
+        drawSelectedPawn(p,"#444","#000");
+    } else {
+        drawPawn(p,"#444","#000");
+    }
+});
+}
+
+function drawPawn(pos,c1,c2){const p=points[pos]; ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10; ctx.shadowOffsetY=5;
+let g=ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25); g.addColorStop(0,c1); g.addColorStop(1,c2);
+ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,26,0,7); ctx.fill(); ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
+ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+}
+
+function drawSelectedPawn(pos,c1,c2){const p=points[pos]; ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10; ctx.shadowOffsetY=5;
+let g=ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25); g.addColorStop(0,c1); g.addColorStop(1,c2);
+ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,26,0,7); ctx.fill(); 
+// Highlight selected pawn
+ctx.strokeStyle="#FF0000"; ctx.lineWidth=4; ctx.stroke();
+ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+}
+
+function endTurn(){
+draw();
+const p1=document.getElementById("p1Name").value;
+const p2=gameMode==="vsComp"?"AI":document.getElementById("p2Name").value;
+if(checkWin(playerPawns)) return gameOver(p1,true);
+if(checkWin(computerPawns)) return gameOver(p2,false);
+selectedPawn = -1; // Reset selection when turn changes
+currentTurn=(currentTurn==="player1")?"player2":"player1";
+updateStatus();
+if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn,600);
+}
+function checkWin(p){return winLines.some(line=>line.every(pos=>p.includes(pos)));}
+function updateStatus(){
+const name=currentTurn==="player1"?document.getElementById("p1Name").value:(gameMode==="vsComp"? "AI":document.getElementById("p2Name").value);
+const phase = gameState === "placing" ? "Placing" : "Moving";
+document.getElementById("status").innerText=name+"'s Turn - " + phase;
+}
+
+/* --- AI LOGIC FOR 3-PAWN GAME --- */
+function aiTurn(){
+    if(gameState === "placing") {
+        // AI placing phase
+        if(computerPawns.length < 3) {
+            const free=points.map((_,i)=>i).filter(i=>!playerPawns.includes(i)&&!computerPawns.includes(i));
+            if(free.length>0){
+                let move = findBestPlacement(computerPawns, playerPawns, diffLevel);
+                if(move === -1) move = free[Math.floor(Math.random() * free.length)];
+                computerPawns.push(move);
+                
+                if(playerPawns.length === 3 && computerPawns.length === 3) {
+                    gameState = "moving";
+                }
+                endTurn();
+            }
+        }
+    } else if(gameState === "moving") {
+        // AI moving phase
+        const bestMove = findBestMove(computerPawns, playerPawns, diffLevel);
+        if(bestMove) {
+            const idx = computerPawns.indexOf(bestMove.from);
+            computerPawns[idx] = bestMove.to;
+            endTurn();
+        }
+    }
+}
+
+function findBestPlacement(myPawns, oppPawns, difficulty) {
+    const free = points.map((_,i) => i).filter(i => !myPawns.includes(i) && !oppPawns.includes(i));
+    if(free.length === 0) return -1;
+    
+    // Check for immediate win
+    for(let pos of free) {
+        const testPawns = [...myPawns, pos];
+        if(checkWin(testPawns)) return pos;
+    }
+    
+    // Block opponent's win
+    for(let pos of free) {
+        const testPawns = [...oppPawns, pos];
+        if(checkWin(testPawns)) return pos;
+    }
+    
+    // Strategic placement - prefer center and corners
+    const strategicOrder = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+    for(let pos of strategicOrder) {
+        if(free.includes(pos)) return pos;
+    }
+    
+    return free[Math.floor(Math.random() * free.length)];
+}
+
+function findBestMove(myPawns, oppPawns, difficulty) {
+    let bestMove = null;
+    let bestScore = -Infinity;
+    
+    for(let pawnPos of myPawns) {
+        const possibleMoves = points.map((_,i) => i).filter(i => 
+            !myPawns.includes(i) && !oppPawns.includes(i) && isValidMove(pawnPos, i)
+        );
+        
+        for(let newPos of possibleMoves) {
+            // Simulate move
+            const newMyPawns = myPawns.slice();
+            const idx = newMyPawns.indexOf(pawnPos);
+            newMyPawns[idx] = newPos;
+            
+            // Check if this wins
+            if(checkWin(newMyPawns)) {
+                return {from: pawnPos, to: newPos};
+            }
+            
+            // Evaluate position
+            const score = evaluateBoardForMovement(newMyPawns, oppPawns);
+            if(score > bestScore) {
+                bestScore = score;
+                bestMove = {from: pawnPos, to: newPos};
+            }
+        }
+    }
+    
+    return bestMove;
+}
+
+function evaluateBoardForMovement(myPawns, oppPawns) {
+    let score = 0;
+    
+    // Check lines for potential wins
+    for(let line of winLines) {
+        const myCount = line.filter(pos => myPawns.includes(pos)).length;
+        const oppCount = line.filter(pos => oppPawns.includes(pos)).length;
+        
+        if(myCount === 2 && oppCount === 0) score += 50;
+        if(myCount === 1 && oppCount === 0) score += 5;
+        if(oppCount === 2 && myCount === 0) score -= 100;
+    }
+    
+    // Center control
+    if(myPawns.includes(4)) score += 10;
+    if(oppPawns.includes(4)) score -= 10;
+    
+    return score;
+}
+
+function gameOver(winnerName, isPlayerWin){
+    gameState="ended";
+    const overlay=document.getElementById("celebration-overlay"); 
+    overlay.style.display="block";
+    
+    // Get level titles
+    const levelTitles = {
+        1: "Okukudurufo (Brave)",
+        6: "Okofo (Warrior)", 
+        20: "Osagyefo (Conqueror)"
+    };
+    const currentLevelTitle = levelTitles[diffLevel] || "Okukudurufo (Brave)";
+    
+    // Get player name for all messages
+    const playerName = document.getElementById("p1Name").value;
+    
+    let message;
+    let statusMessage;
+    
+    if(isPlayerWin){
+        triggerCelebration(); 
+        message = `Congratulations ${playerName}, you won Pee-ow! ${currentLevelTitle}`;
+        statusMessage = `CONGRATULATIONS ${playerName.toUpperCase()}, YOU WON! ${currentLevelTitle}`;
+        document.getElementById("nextLevelBtn").classList.remove("hidden");
+    } else {
+        message = `Sorry ${playerName}, AI wins. Better luck next time, try again!`;
+        statusMessage = `${playerName.toUpperCase()} LOSES - AI WINS!`;
+        document.getElementById("nextLevelBtn").classList.add("hidden");
+    }
+    
+    speakResultWithChime(message);
+    document.getElementById("status").innerText = statusMessage;
+    document.getElementById("gameOverButtons").style.display = "flex";
+}
+
+function triggerCelebration(){
+const overlay=document.getElementById("celebration-overlay");
+const items=['🎈','🎊','🎉','🏆','🔥','⭐'];
+for(let i=0;i<50;i++){setTimeout(()=>{
+const b=document.createElement('div'); b.className='balloon'; b.innerText=items[Math.floor(Math.random()*items.length)];
+b.style.left=Math.random()*100+'vw'; b.style.animationDuration=(Math.random()*2+2)+'s';
+overlay.appendChild(b); setTimeout(()=>b.remove(),4000);
+},i*100);}
+}
+
+function undoMove(){if(stateStack.length>0){[playerPawns,computerPawns]=stateStack.pop(); selectedPawn=-1; draw();}}
+
+/* --- GAME OVER FUNCTIONS --- */
+function replayGame() {
+    document.getElementById("celebration-overlay").style.display = "none";
+    startGame();
+}
+
+function goToMainMenu() {
+    document.getElementById("celebration-overlay").style.display = "none";
+    document.getElementById("game-ui").classList.add("hidden");
+    document.getElementById("menu-ui").classList.remove("hidden");
+    gameState = "menu";
+}
+
+function nextLevel() {
+    // Advance to next difficulty level
+    if(diffLevel === 1) {
+        setDiff(6, 'd6');
+    } else if(diffLevel === 6) {
+        setDiff(20, 'd20');
+    }
+    // If already at max level, stay at max
+    
+    document.getElementById("celebration-overlay").style.display = "none";
+    startGame();
+}
+</script>
+
+</body>
+</html>
