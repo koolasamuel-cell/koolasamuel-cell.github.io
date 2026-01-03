@@ -1,14 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KWASIADA FRANKAA - Ashanti Edition</title>
 
-<!-- Google AdSense Code -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8880362669865809"
      crossorigin="anonymous"></script>
 
 <style>
-
 :root {
     --ashanti-gold: #FFD700;
     --ashanti-green: #00AA00;
@@ -64,13 +64,14 @@ body {
 /* 3D Interface */
 .container { width: 95%; max-width: 600px; margin-top: 25px; padding-bottom: 50px; perspective: 1000px; }
 #gameCanvas {
-    background: #ccc; border: 10px solid #222; border-radius: 10px;
-    width: 600px; height: 600px; /* FIXED SIZE */
+    background: #111; border: 10px solid #222; border-radius: 10px;
+    width: 100%; aspect-ratio: 1/1; max-width: 600px;
     margin: 20px 0;
-    transform: rotateX(20deg); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: rotateX(15deg); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     transition: transform 0.5s ease;
+    cursor: pointer;
 }
-#gameCanvas:hover { transform: rotateX(10deg); }
+#gameCanvas:hover { transform: rotateX(5deg); }
 .panel-3d {
     background: var(--panel-bg); padding: 25px; border-radius: 20px;
     border: 2px solid #333; box-shadow: 0 15px 35px rgba(0,0,0,0.5); text-align: center;
@@ -90,7 +91,7 @@ input, select {
     border: 1px solid #333; border-radius: 8px; color: white; font-size: 16px;
 }
 .diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.diff-card { background: #222; padding: 15px 5px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
+.diff-card { background: #222; padding: 15px 5px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; font-size: 0.8rem;}
 .diff-card.active { border-color: var(--ashanti-gold); background: #2a2a2a; }
 .start-btn {
     width: 100%; padding: 18px; background: var(--ashanti-green); color: white;
@@ -114,18 +115,9 @@ input, select {
     cursor: pointer;
     transition: 0.3s;
 }
-.replay-btn {
-    background: var(--ashanti-green);
-    color: white;
-}
-.menu-btn {
-    background: var(--ashanti-gold);
-    color: black;
-}
-.next-btn {
-    background: #FF6B35;
-    color: white;
-}
+.replay-btn { background: var(--ashanti-green); color: white; }
+.menu-btn { background: var(--ashanti-gold); color: black; }
+.next-btn { background: #FF6B35; color: white; }
 
 /* Celebration */
 #celebration-overlay {
@@ -138,7 +130,7 @@ input, select {
 }
 @keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
 .hidden { display: none !important; }
-#status { font-size: 24px; color: var(--ashanti-gold); margin-bottom: 10px; }
+#status { font-size: 24px; color: var(--ashanti-gold); margin-bottom: 10px; font-weight: bold;}
 footer { margin-top: auto; padding: 30px; font-size: 12px; color: #555; text-align: center; }
 </style>
 </head>
@@ -185,47 +177,23 @@ footer { margin-top: auto; padding: 30px; font-size: 12px; color: #555; text-ali
         <button class="start-btn" onclick="startGame()">START MATCH</button>
     </div>
 
-  <div class="history-panel" style="text-align: center;">
-    <h3 style="background-color: var(--ashanti-gold); color: black; display: inline-block; padding: 8px 16px; border-radius: 6px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-bottom: 6px;">
-        ABOUT KWASIADA FRANKAA
-    </h3>
-    <div style="background-color: var(--ashanti-black); color: white; padding: 12px 15px; border-radius: 8px; font-family: Arial, sans-serif; line-height: 1.5; text-align: left;">
-        <p><strong>Kwasiada Frankaa</strong> is a traditional Ashanti strategy board game. "<strong>Kwasiada</strong>" refers to Sunday, while "<strong>Frankaa</strong>" means flag—a symbol of leadership or victory in traditional Ashanti contexts.</p>
-        <p>The game centers around a central flag (frankaa) that players must protect, capture, or use strategically to win.</p>
-
-        <div id="moreText" style="display: none;">
-            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Origin & History:</strong> Kwasiada Frankaa originated in Ashanti communities in the late 19th century (around the 1880s–1890s) and has been preserved through oral tradition. It was traditionally played during village evenings, festivals, or moonlight gatherings, serving both as entertainment and as a way to develop mental sharpness.</p>
-
-            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">How Children Played:</strong> To create the board, children either used <strong>charcoal to draw lines</strong> and folded paper, stones, or broken broomsticks as pawns, <strong>or</strong> they sometimes used sticks to draw lines on the ground, often in <strong>sand or clay</strong>, using <strong>stones to represent the three pawns</strong>. The game served both as entertainment and as a tool to sharpen strategic thinking from a young age.</p>
-
-            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Gameplay & Rules:</strong> The objective is to <strong>align all pawns in a straight line</strong>—vertically, horizontally, or diagonally. Players take turns moving one pawn at a time, and <strong>no pawn may be skipped or jumped</strong>. The first player to align all their pawns wins the round.</p>
-
-            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Cultural Significance:</strong> Kwasiada Frankaa teaches <strong>alertness, timing, strategic thinking, patience, and problem-solving</strong>, while promoting <strong>friendly competition and community bonding</strong>. Modern adaptations of the game help preserve Ashanti heritage and introduce it to younger generations.</p>
-
-            <p><strong style="background-color: var(--ashanti-gold); color: black; padding: 2px 4px; border-radius: 3px;">Notable Players:</strong> Samuel Attah-Nti, who developed a modern version of the game, recalls playing it as a child.</p>
+    <div class="history-panel" style="text-align: center; margin-top: 20px;">
+        <h3 style="background-color: var(--ashanti-gold); color: black; display: inline-block; padding: 8px 16px; border-radius: 6px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-bottom: 6px;">
+            ABOUT KWASIADA FRANKAA
+        </h3>
+        <div style="background-color: var(--ashanti-black); color: white; padding: 12px 15px; border-radius: 8px; font-family: Arial, sans-serif; line-height: 1.5; text-align: left; border: 1px solid #333;">
+            <p><strong>Kwasiada Frankaa</strong> is a traditional Ashanti strategy board game. "<strong>Kwasiada</strong>" refers to Sunday, while "<strong>Frankaa</strong>" means flag—a symbol of leadership or victory.</p>
+            <div id="moreText" style="display: none;">
+                <p><strong>Origin:</strong> Originated in Ashanti communities around the 1880s. Children used charcoal to draw lines and stones to represent the three pawns.</p>
+                <p><strong>Objective:</strong> Align all 3 pawns in a straight line—vertically, horizontally, or diagonally. Moves are restricted to adjacent connected points.</p>
+            </div>
+            <button id="readMoreBtn" onclick="toggleReadMore()" style="margin-top: 10px; background-color: var(--ashanti-gold); color: black; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                Read More
+            </button>
         </div>
-
-        <button id="readMoreBtn" onclick="toggleReadMore()" style="margin-top: 10px; background-color: var(--ashanti-gold); color: black; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
-            Read More
-        </button>
-
-        <p style="margin-top: 10px;"><small>Source: "Asante Traditional Games and Play Culture" (Oral Accounts, 2020, Kwame Nkrumah University of Science and Technology Cultural Studies Department).</small></p>
     </div>
 </div>
 
-<script>
-function toggleReadMore() {
-    const moreText = document.getElementById("moreText");
-    const btn = document.getElementById("readMoreBtn");
-    if (moreText.style.display === "none") {
-        moreText.style.display = "block";
-        btn.innerText = "Read Less";
-    } else {
-        moreText.style.display = "none";
-        btn.innerText = "Read More";
-    }
-}
-</script>
 <div class="container hidden" id="game-ui" style="text-align:center;">
     <div id="status">Koola's Turn</div>
     <canvas id="gameCanvas" width="600" height="600"></canvas>
@@ -247,72 +215,42 @@ Preserving Ashanti Cultural Heritage Through Digital Gaming.
 </footer>
 
 <script>
-/* --- AUDIO --- */
+/* --- AUDIO & UTILS --- */
 let audioInitialized=false, audioCtx, chimeSound;
-function initAudio(){if(audioInitialized) return;
-audioInitialized=true; audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-let osc=audioCtx.createOscillator(), g=audioCtx.createGain();
-osc.frequency.setValueAtTime(440,audioCtx.currentTime);
-g.gain.setValueAtTime(0.001,audioCtx.currentTime);
-osc.connect(g); g.connect(audioCtx.destination);
-osc.start(); osc.stop(audioCtx.currentTime+0.01);
-chimeSound=new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-chimeSound.volume = 1.0; // Maximum volume
-}
-function playClick(f,d){if(!audioCtx) return;
-let o=audioCtx.createOscillator(), g=audioCtx.createGain();
-o.type="sine"; o.frequency.setValueAtTime(f,audioCtx.currentTime);
-g.gain.setValueAtTime(0.3,audioCtx.currentTime); // Increased from 0.1 to 0.3
-g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);
-o.connect(g); g.connect(audioCtx.destination);
-o.start(); o.stop(audioCtx.currentTime+d);
+function initAudio(){
+    if(audioInitialized) return;
+    audioInitialized=true; 
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    chimeSound=new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
 }
 
-/* --- TEXT TO SPEECH --- */
+function playClick(f,d){
+    if(!audioCtx) return;
+    let o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type="sine"; o.frequency.setValueAtTime(f,audioCtx.currentTime);
+    g.gain.setValueAtTime(0.3,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime+d);
+}
+
 function speakResultWithChime(message){
     try {
-        if(chimeSound) chimeSound.play().catch(e=>console.log("Chime failed:",e));
+        if(chimeSound) chimeSound.play().catch(e=>console.log(e));
         if('speechSynthesis' in window){
             const utterance = new SpeechSynthesisUtterance(message);
-            
-            // Set female voice preference
-            const voices = speechSynthesis.getVoices();
-            const femaleVoice = voices.find(voice => 
-                voice.name.toLowerCase().includes('female') ||
-                voice.name.toLowerCase().includes('woman') ||
-                voice.name.toLowerCase().includes('zira') ||
-                voice.name.toLowerCase().includes('hazel') ||
-                voice.name.toLowerCase().includes('karen') ||
-                voice.name.toLowerCase().includes('samantha') ||
-                voice.name.toLowerCase().includes('victoria') ||
-                voice.name.toLowerCase().includes('susan')
-            );
-            
-            if(femaleVoice) {
-                utterance.voice = femaleVoice;
-            }
-            
-            utterance.rate = 0.8;
-            utterance.pitch = 1.2; // Slightly higher pitch for female voice
-            utterance.volume = 1.0;
+            utterance.rate = 0.9;
             speechSynthesis.speak(utterance);
         }
-    } catch(e) {
-        console.log("Speech failed:",e);
-    }
+    } catch(e) { console.log(e); }
 }
 
-/* --- READ MORE TOGGLE --- */
 function toggleReadMore() {
     const moreText = document.getElementById("moreText");
     const btn = document.getElementById("readMoreBtn");
-    if (moreText.style.display === "none") {
-        moreText.style.display = "block";
-        btn.innerText = "Read Less";
-    } else {
-        moreText.style.display = "none";
-        btn.innerText = "Read More";
-    }
+    const isHidden = moreText.style.display === "none";
+    moreText.style.display = isHidden ? "block" : "none";
+    btn.innerText = isHidden ? "Read Less" : "Read More";
 }
 
 /* --- GAME LOGIC --- */
@@ -320,343 +258,219 @@ const canvas=document.getElementById("gameCanvas"), ctx=canvas.getContext("2d");
 const points=[{x:100,y:100},{x:300,y:100},{x:500,y:100},{x:100,y:300},{x:300,y:300},{x:500,y:300},{x:100,y:500},{x:300,y:500},{x:500,y:500}];
 const links=[[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[0,3],[3,6],[1,4],[4,7],[2,5],[5,8],[0,4],[2,4],[6,4],[8,4]];
 const winLines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-let playerPawns=[], computerPawns=[], stateStack=[], gameMode="vsComp", currentTurn="player1", gameState="menu", diffLevel=1;
-let selectedPawn=-1; // For movement phase
 
-function setMode(m){playClick(500,0.1); gameMode=m;
-document.getElementById("btnComp").classList.toggle("active",m==='vsComp');
-document.getElementById("btnHuman").classList.toggle("active",m==='vsHuman');
-document.getElementById("p2Name").classList.toggle("hidden",m==='vsComp'); updateStarterOptions();}
+let playerPawns=[], computerPawns=[], stateStack=[], gameMode="vsComp", currentTurn="player1", gameState="menu", diffLevel=1;
+let selectedPawn=-1;
+
+function setMode(m){
+    playClick(500,0.1); gameMode=m;
+    document.getElementById("btnComp").classList.toggle("active",m==='vsComp');
+    document.getElementById("btnHuman").classList.toggle("active",m==='vsHuman');
+    document.getElementById("p2Name").classList.toggle("hidden",m==='vsComp'); 
+    updateStarterOptions();
+}
+
 function updateStarterOptions(){
-const p1=document.getElementById("p1Name").value;
-const p2=gameMode==="vsComp"?"Opponent":document.getElementById("p2Name").value;
-document.getElementById("starterSelect").innerHTML=`<option value="player1">${p1} Starts</option><option value="player2">${p2} Starts</option>`;}
-function setDiff(val,id){playClick(600,0.1); diffLevel=val; document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('active')); document.getElementById(id).classList.add('active');}
+    const p1=document.getElementById("p1Name").value || "Koola";
+    const p2=gameMode==="vsComp"?"Opponent": (document.getElementById("p2Name").value || "Nana");
+    document.getElementById("starterSelect").innerHTML=`<option value="player1">${p1} Starts</option><option value="player2">${p2} Starts</option>`;
+}
+
+function setDiff(val,id){
+    playClick(600,0.1); diffLevel=val; 
+    document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('active')); 
+    document.getElementById(id).classList.add('active');
+}
 
 function startGame(){
-playClick(800,0.2);
-gameState="placing"; playerPawns=[]; computerPawns=[]; stateStack=[]; selectedPawn=-1;
-currentTurn=document.getElementById("starterSelect").value;
-document.getElementById("menu-ui").classList.add("hidden");
-document.getElementById("game-ui").classList.remove("hidden");
-document.getElementById("gameOverButtons").style.display = "none";
-draw();
-updateStatus();
-if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn,800);
+    playClick(800,0.2);
+    gameState="placing"; playerPawns=[]; computerPawns=[]; stateStack=[]; selectedPawn=-1;
+    currentTurn=document.getElementById("starterSelect").value;
+    document.getElementById("menu-ui").classList.add("hidden");
+    document.getElementById("game-ui").classList.remove("hidden");
+    document.getElementById("gameOverButtons").style.display = "none";
+    updateStatus();
+    draw();
+    if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn,800);
 }
 
-/* CANVAS CLICK LOGIC */
 canvas.onclick=(e)=>{
-if(gameState==="ended") return;
-const rect=canvas.getBoundingClientRect();
-const x=(e.clientX-rect.left)*(600/rect.width);
-const y=(e.clientY-rect.top)*(600/rect.height);
-points.forEach((p,i)=>{
-if(Math.hypot(x-p.x,y-p.y)<40){
-
-    // PLACEMENT PHASE - Each player can place max 3 pawns
-    if(gameState==="placing" && !playerPawns.includes(i) && !computerPawns.includes(i)){
-        const currentPlayerPawns = currentTurn==="player1" ? playerPawns : computerPawns;
-        if(currentPlayerPawns.length < 3) { // Limit to 3 pawns per player
-            playClick(300,0.15);
-            stateStack.push([playerPawns.slice(),computerPawns.slice()]);
-           if(currentTurn==="player1") playerPawns.push(i);
-else computerPawns.push(i);
-
-// Check if placement phase is complete
-if(playerPawns.length === 3 && computerPawns.length === 3) {
-    gameState = "moving";
-}
-endTurn();
-
+    if(gameState==="ended") return;
+    const rect=canvas.getBoundingClientRect();
+    const x=(e.clientX-rect.left)*(600/rect.width);
+    const y=(e.clientY-rect.top)*(600/rect.height);
     
-    // MOVEMENT PHASE - Move existing pawns
-    else if(gameState==="moving") {
-        const currentPlayerPawns = currentTurn==="player1" ? playerPawns : computerPawns;
-        
+    points.forEach((p,i)=>{
+        if(Math.hypot(x-p.x,y-p.y)<40){
+            handlePointClick(i);
+        }
+    });
+};
+
+function handlePointClick(i) {
+    const currentP = currentTurn === "player1" ? playerPawns : computerPawns;
+    
+    if(gameState === "placing") {
+        if(!playerPawns.includes(i) && !computerPawns.includes(i) && currentP.length < 3) {
+            stateStack.push([playerPawns.slice(), computerPawns.slice()]);
+            currentP.push(i);
+            playClick(300, 0.1);
+            if(playerPawns.length === 3 && computerPawns.length === 3) gameState = "moving";
+            endTurn();
+        }
+    } else if(gameState === "moving") {
         if(selectedPawn === -1) {
-            // Select a pawn to move
-            if(currentPlayerPawns.includes(i)) {
-                selectedPawn = i;
-                playClick(400, 0.1);
-                draw(); // Redraw to show selection
-            }
-        } else {
-            // Move selected pawn to new position
-            if(!playerPawns.includes(i) && !computerPawns.includes(i) && isValidMove(selectedPawn, i)) {
-                playClick(300,0.15);
-                stateStack.push([playerPawns.slice(),computerPawns.slice()]);
-                
-                if(currentTurn==="player1") {
-                    const idx = playerPawns.indexOf(selectedPawn);
-                    playerPawns[idx] = i;
-                } else {
-                    const idx = computerPawns.indexOf(selectedPawn);
-                    computerPawns[idx] = i;
-                }
-                selectedPawn = -1;
-                endTurn();
-            } else if(currentPlayerPawns.includes(i)) {
-                // Select different pawn
+            if(currentP.includes(i)) {
                 selectedPawn = i;
                 playClick(400, 0.1);
                 draw();
-            } else {
-                // Invalid move, deselect
+            }
+        } else {
+            if(i === selectedPawn) {
                 selectedPawn = -1;
+                draw();
+            } else if(!playerPawns.includes(i) && !computerPawns.includes(i) && isValidMove(selectedPawn, i)) {
+                stateStack.push([playerPawns.slice(), computerPawns.slice()]);
+                const idx = currentP.indexOf(selectedPawn);
+                currentP[idx] = i;
+                selectedPawn = -1;
+                playClick(300, 0.15);
+                endTurn();
+            } else if(currentP.includes(i)) {
+                selectedPawn = i;
                 draw();
             }
         }
     }
-}});};
+}
 
-// Check if move is valid (adjacent positions only)
 function isValidMove(from, to) {
-    const fromPoint = points[from];
-    const toPoint = points[to];
-    
-    // Check if positions are connected by a link
-    return links.some(link => 
-        (link[0] === from && link[1] === to) || 
-        (link[1] === from && link[0] === to)
-    );
+    return links.some(l => (l[0]===from && l[1]===to) || (l[1]===from && l[0]===to));
 }
 
 function draw(){
-ctx.clearRect(0,0,600,600);
-ctx.strokeStyle="#444"; ctx.lineWidth=10;
-links.forEach(l=>{ctx.beginPath(); ctx.moveTo(points[l[0]].x,points[l[0]].y); ctx.lineTo(points[l[1]].x,points[l[1]].y); ctx.stroke();});
-points.forEach(p=>{ctx.fillStyle="#888"; ctx.beginPath(); ctx.arc(p.x,p.y,14,0,7); ctx.fill();});
-
-// Draw selected pawn with highlight
-playerPawns.forEach(p=>{
-    if(p === selectedPawn && currentTurn === "player1") {
-        drawSelectedPawn(p,"#FFD700","#B8860B");
-    } else {
-        drawPawn(p,"#FFD700","#B8860B");
-    }
-});
-computerPawns.forEach(p=>{
-    if(p === selectedPawn && currentTurn === "player2") {
-        drawSelectedPawn(p,"#444","#000");
-    } else {
-        drawPawn(p,"#444","#000");
-    }
-});
+    ctx.clearRect(0,0,600,600);
+    // Draw Board Lines
+    ctx.strokeStyle="#555"; ctx.lineWidth=8;
+    links.forEach(l=>{
+        ctx.beginPath(); ctx.moveTo(points[l[0]].x,points[l[0]].y); 
+        ctx.lineTo(points[l[1]].x,points[l[1]].y); ctx.stroke();
+    });
+    // Draw Points
+    points.forEach(p=>{
+        ctx.fillStyle="#333"; ctx.beginPath(); ctx.arc(p.x,p.y,12,0,7); ctx.fill();
+    });
+    // Draw Pawns
+    playerPawns.forEach(p => drawPawn(p, "#FFD700", "#B8860B", p === selectedPawn));
+    computerPawns.forEach(p => drawPawn(p, "#00AA00", "#006400", p === selectedPawn && gameMode === "vsHuman"));
 }
 
-function drawPawn(pos,c1,c2){const p=points[pos]; ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10; ctx.shadowOffsetY=5;
-let g=ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25); g.addColorStop(0,c1); g.addColorStop(1,c2);
-ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,26,0,7); ctx.fill(); ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
-ctx.shadowBlur=0; ctx.shadowOffsetY=0;
-}
-
-function drawSelectedPawn(pos,c1,c2){const p=points[pos]; ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10; ctx.shadowOffsetY=5;
-let g=ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25); g.addColorStop(0,c1); g.addColorStop(1,c2);
-ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,26,0,7); ctx.fill(); 
-// Highlight selected pawn
-ctx.strokeStyle="#FF0000"; ctx.lineWidth=4; ctx.stroke();
-ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+function drawPawn(pos, c1, c2, isSelected){
+    const p=points[pos];
+    ctx.shadowBlur=isSelected ? 20 : 10;
+    ctx.shadowColor=isSelected ? "white" : "black";
+    let g=ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25);
+    g.addColorStop(0,c1); g.addColorStop(1,c2);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,28,0,7); ctx.fill();
+    ctx.strokeStyle=isSelected ? "white" : "rgba(255,255,255,0.3)";
+    ctx.lineWidth=isSelected ? 4 : 2; ctx.stroke();
+    ctx.shadowBlur=0;
 }
 
 function endTurn(){
-draw();
-const p1=document.getElementById("p1Name").value;
-const p2=gameMode==="vsComp"?"AI":document.getElementById("p2Name").value;
-if(checkWin(playerPawns)) return gameOver(p1,true);
-if(checkWin(computerPawns)) return gameOver(p2,false);
-selectedPawn = -1; // Reset selection when turn changes
-currentTurn=(currentTurn==="player1")?"player2":"player1";
-updateStatus();
-if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn,600);
-}
-function checkWin(p){return winLines.some(line=>line.every(pos=>p.includes(pos)));}
-function updateStatus(){
-const name=currentTurn==="player1"?document.getElementById("p1Name").value:(gameMode==="vsComp"? "AI":document.getElementById("p2Name").value);
-const phase = gameState === "placing" ? "Placing" : "Moving";
-document.getElementById("status").innerText=name+"'s Turn - " + phase;
+    draw();
+    if(checkWin(playerPawns)) return gameOver(document.getElementById("p1Name").value, true);
+    if(checkWin(computerPawns)) return gameOver(gameMode==="vsComp"?"AI":document.getElementById("p2Name").value, false);
+    
+    currentTurn = (currentTurn==="player1") ? "player2" : "player1";
+    updateStatus();
+    if(gameMode==="vsComp" && currentTurn==="player2") setTimeout(aiTurn, 600);
 }
 
-/* --- AI LOGIC FOR 3-PAWN GAME --- */
+function checkWin(p){ return winLines.some(line=>line.every(pos=>p.includes(pos))); }
+
+function updateStatus(){
+    const p1 = document.getElementById("p1Name").value || "Koola";
+    const p2 = gameMode==="vsComp" ? "AI" : (document.getElementById("p2Name").value || "Nana");
+    const name = currentTurn==="player1" ? p1 : p2;
+    const phase = gameState === "placing" ? "Placing" : "Moving";
+    document.getElementById("status").innerText = `${name}'s Turn (${phase})`;
+}
+
+/* --- AI LOGIC --- */
 function aiTurn(){
     if(gameState === "placing") {
-        // AI placing phase
-        if(computerPawns.length < 3) {
-            const free=points.map((_,i)=>i).filter(i=>!playerPawns.includes(i)&&!computerPawns.includes(i));
-            if(free.length>0){
-                let move = findBestPlacement(computerPawns, playerPawns, diffLevel);
-                if(move === -1) move = free[Math.floor(Math.random() * free.length)];
-                computerPawns.push(move);
-                
-                if(playerPawns.length === 3 && computerPawns.length === 3) {
-                    gameState = "moving";
-                }
-                endTurn();
-            }
+        const free = points.map((_,i)=>i).filter(i=>!playerPawns.includes(i)&&!computerPawns.includes(i));
+        if(free.length > 0) {
+            let move = findBestPlacement(computerPawns, playerPawns);
+            computerPawns.push(move);
+            if(playerPawns.length === 3 && computerPawns.length === 3) gameState = "moving";
+            endTurn();
         }
-    } else if(gameState === "moving") {
-        // AI moving phase
-        const bestMove = findBestMove(computerPawns, playerPawns, diffLevel);
-        if(bestMove) {
-            const idx = computerPawns.indexOf(bestMove.from);
-            computerPawns[idx] = bestMove.to;
+    } else {
+        const move = findBestMove(computerPawns, playerPawns);
+        if(move) {
+            const idx = computerPawns.indexOf(move.from);
+            computerPawns[idx] = move.to;
             endTurn();
         }
     }
 }
 
-function findBestPlacement(myPawns, oppPawns, difficulty) {
-    const free = points.map((_,i) => i).filter(i => !myPawns.includes(i) && !oppPawns.includes(i));
-    if(free.length === 0) return -1;
-    
-    // Check for immediate win
-    for(let pos of free) {
-        const testPawns = [...myPawns, pos];
-        if(checkWin(testPawns)) return pos;
-    }
-    
-    // Block opponent's win
-    for(let pos of free) {
-        const testPawns = [...oppPawns, pos];
-        if(checkWin(testPawns)) return pos;
-    }
-    
-    // Strategic placement - prefer center and corners
-    const strategicOrder = [4, 0, 2, 6, 8, 1, 3, 5, 7];
-    for(let pos of strategicOrder) {
-        if(free.includes(pos)) return pos;
-    }
-    
-    return free[Math.floor(Math.random() * free.length)];
+function findBestPlacement(my, opp) {
+    const free = points.map((_,i)=>i).filter(i=>!my.includes(i)&&!opp.includes(i));
+    for(let p of free) if(checkWin([...my, p])) return p;
+    for(let p of free) if(checkWin([...opp, p])) return p;
+    return free.includes(4) ? 4 : free[Math.floor(Math.random()*free.length)];
 }
 
-function findBestMove(myPawns, oppPawns, difficulty) {
-    let bestMove = null;
-    let bestScore = -Infinity;
-    
-    for(let pawnPos of myPawns) {
-        const possibleMoves = points.map((_,i) => i).filter(i => 
-            !myPawns.includes(i) && !oppPawns.includes(i) && isValidMove(pawnPos, i)
-        );
-        
-        for(let newPos of possibleMoves) {
-            // Simulate move
-            const newMyPawns = myPawns.slice();
-            const idx = newMyPawns.indexOf(pawnPos);
-            newMyPawns[idx] = newPos;
-            
-            // Check if this wins
-            if(checkWin(newMyPawns)) {
-                return {from: pawnPos, to: newPos};
+function findBestMove(my, opp) {
+    let moves = [];
+    my.forEach(p => {
+        points.forEach((_, i) => {
+            if(!my.includes(i) && !opp.includes(i) && isValidMove(p, i)) {
+                let test = [...my]; test[my.indexOf(p)] = i;
+                if(checkWin(test)) return moves = [{from:p, to:i, win:true}];
+                moves.push({from:p, to:i});
             }
-            
-            // Evaluate position
-            const score = evaluateBoardForMovement(newMyPawns, oppPawns);
-            if(score > bestScore) {
-                bestScore = score;
-                bestMove = {from: pawnPos, to: newPos};
-            }
-        }
-    }
-    
-    return bestMove;
+        });
+    });
+    if(moves.find(m => m.win)) return moves.find(m => m.win);
+    return moves[Math.floor(Math.random()*moves.length)];
 }
 
-function evaluateBoardForMovement(myPawns, oppPawns) {
-    let score = 0;
-    
-    // Check lines for potential wins
-    for(let line of winLines) {
-        const myCount = line.filter(pos => myPawns.includes(pos)).length;
-        const oppCount = line.filter(pos => oppPawns.includes(pos)).length;
-        
-        if(myCount === 2 && oppCount === 0) score += 50;
-        if(myCount === 1 && oppCount === 0) score += 5;
-        if(oppCount === 2 && myCount === 0) score -= 100;
-    }
-    
-    // Center control
-    if(myPawns.includes(4)) score += 10;
-    if(oppPawns.includes(4)) score -= 10;
-    
-    return score;
-}
-
-function gameOver(winnerName, isPlayerWin){
+function gameOver(name, isWin){
     gameState="ended";
-    const overlay=document.getElementById("celebration-overlay"); 
+    const overlay=document.getElementById("celebration-overlay");
     overlay.style.display="block";
     
-    // Get level titles
-    const levelTitles = {
-        1: "Okukudurufo (Brave)",
-        6: "Okofo (Warrior)", 
-        20: "Osagyefo (Conqueror)"
-    };
-    const currentLevelTitle = levelTitles[diffLevel] || "Okukudurufo (Brave)";
-    
-    // Get player name for all messages
-    const playerName = document.getElementById("p1Name").value;
-    
-    let message;
-    let statusMessage;
-    
-    if(isPlayerWin){
-        triggerCelebration(); 
-        message = `Congratulations ${playerName}, you won Pee-ow! ${currentLevelTitle}`;
-        statusMessage = `CONGRATULATIONS ${playerName.toUpperCase()}, YOU WON! ${currentLevelTitle}`;
-        document.getElementById("nextLevelBtn").classList.remove("hidden");
-    } else {
-        message = `Sorry ${playerName}, AI wins. Better luck next time, try again!`;
-        statusMessage = `${playerName.toUpperCase()} LOSES - AI WINS!`;
-        document.getElementById("nextLevelBtn").classList.add("hidden");
-    }
-    
-    speakResultWithChime(message);
-    document.getElementById("status").innerText = statusMessage;
+    let msg = isWin ? `Congratulations ${name}, you won Pee-ow!` : `Sorry ${name}, AI wins. Try again!`;
+    document.getElementById("status").innerText = isWin ? "VICTORY!" : "GAME OVER";
     document.getElementById("gameOverButtons").style.display = "flex";
+    if(isWin) {
+        triggerCelebration();
+        document.getElementById("nextLevelBtn").classList.remove("hidden");
+    }
+    speakResultWithChime(msg);
 }
 
 function triggerCelebration(){
-const overlay=document.getElementById("celebration-overlay");
-const items=['🎈','🎊','🎉','🏆','🔥','⭐'];
-for(let i=0;i<50;i++){setTimeout(()=>{
-const b=document.createElement('div'); b.className='balloon'; b.innerText=items[Math.floor(Math.random()*items.length)];
-b.style.left=Math.random()*100+'vw'; b.style.animationDuration=(Math.random()*2+2)+'s';
-overlay.appendChild(b); setTimeout(()=>b.remove(),4000);
-},i*100);}
-}
-
-function undoMove(){if(stateStack.length>0){[playerPawns,computerPawns]=stateStack.pop(); selectedPawn=-1; draw();}}
-
-/* --- GAME OVER FUNCTIONS --- */
-function replayGame() {
-    document.getElementById("celebration-overlay").style.display = "none";
-    startGame();
-}
-
-function goToMainMenu() {
-    document.getElementById("celebration-overlay").style.display = "none";
-    document.getElementById("game-ui").classList.add("hidden");
-    document.getElementById("menu-ui").classList.remove("hidden");
-    gameState = "menu";
-}
-
-function nextLevel() {
-    // Advance to next difficulty level
-    if(diffLevel === 1) {
-        setDiff(6, 'd6');
-    } else if(diffLevel === 6) {
-        setDiff(20, 'd20');
+    const items=['🎈','🎊','🎉','🏆','⭐'];
+    for(let i=0; i<30; i++){
+        setTimeout(()=>{
+            const b=document.createElement('div'); b.className='balloon';
+            b.innerText=items[Math.floor(Math.random()*items.length)];
+            b.style.left=Math.random()*90+'vw';
+            document.getElementById("celebration-overlay").appendChild(b);
+            setTimeout(()=>b.remove(), 4000);
+        }, i*150);
     }
-    // If already at max level, stay at max
-    
-    document.getElementById("celebration-overlay").style.display = "none";
-    startGame();
 }
+
+function undoMove(){ if(stateStack.length>0){ [playerPawns, computerPawns]=stateStack.pop(); gameState = (playerPawns.length < 3) ? "placing" : "moving"; draw(); updateStatus(); }}
+function replayGame(){ startGame(); }
+function goToMainMenu(){ location.reload(); }
+function nextLevel(){ if(diffLevel===1) setDiff(6,'d6'); else if(diffLevel===6) setDiff(20,'d20'); startGame(); }
 </script>
-
 </body>
-
 </html>
-
