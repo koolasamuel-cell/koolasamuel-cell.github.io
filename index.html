@@ -14,13 +14,12 @@
     --ashanti-green: #00AA00;
     --ashanti-black: #000000;
     --dark-bg: #0a0a0a;
-    --panel-bg: rgba(26, 26, 26, 0.9); /* Slightly transparent to see branding */
+    --panel-bg: rgba(15, 15, 15, 0.95); 
     --input-bg: #121212;
 }
 
 body {
     margin: 0;
-    /* ADDED BRANDING IMAGE AS FIXED BACKGROUND */
     background-image: url('koolabrandinggames_updated.jpg');
     background-size: cover;
     background-position: center;
@@ -38,7 +37,7 @@ body {
 #header {
     width: 100%;
     padding: 20px 0;
-    background: rgba(0, 0, 0, 0.85); /* Semi-transparent header */
+    background: rgba(0, 0, 0, 0.9);
     border-bottom: 4px solid var(--ashanti-gold);
     display: flex;
     justify-content: center;
@@ -74,13 +73,13 @@ body {
 .container { width: 95%; max-width: 600px; margin-top: 25px; padding-bottom: 50px; perspective: 1000px; }
 
 #gameCanvas {
-    /* TRANSPARENT BACKGROUND FOR CANVAS TO SHOW BRANDING */
-    background: rgba(17, 17, 17, 0.4); 
-    border: 10px solid rgba(34, 34, 34, 0.8); 
+    /* DARKER OVERLAY TO MAKE GOLD POP */
+    background: rgba(0, 0, 0, 0.75); 
+    border: 10px solid rgba(50, 50, 50, 0.9); 
     border-radius: 10px;
     width: 100%; aspect-ratio: 1/1; max-width: 600px;
     margin: 20px 0;
-    transform: rotateX(15deg); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: rotateX(15deg); box-shadow: 0 20px 50px rgba(0,0,0,0.7);
     transition: transform 0.5s ease;
     cursor: pointer;
 }
@@ -155,9 +154,9 @@ input, select {
 
 .hidden { display: none !important; }
 
-#status { font-size: 24px; color: var(--ashanti-gold); margin-bottom: 10px; font-weight: bold; background: rgba(0,0,0,0.5); border-radius: 8px; padding: 5px;}
+#status { font-size: 24px; color: var(--ashanti-gold); margin-bottom: 10px; font-weight: bold; background: rgba(0,0,0,0.7); border-radius: 8px; padding: 5px;}
 
-footer { margin-top: auto; padding: 30px; font-size: 12px; color: #ddd; text-align: center; background: rgba(0,0,0,0.7); width: 100%; }
+footer { margin-top: auto; padding: 30px; font-size: 12px; color: #ddd; text-align: center; background: rgba(0,0,0,0.8); width: 100%; }
 </style>
 </head>
 <body onclick="initAudio();">
@@ -267,7 +266,6 @@ Preserving Ashanti Cultural Heritage Through Digital Gaming.
 </footer>
 
 <script>
-// (All your JS logic remains exactly the same below)
 let audioInitialized = false;
 let audioCtx;
 let jazzLoop = null;
@@ -515,7 +513,8 @@ function isValidMove(from, to) { return links.some(l => (l[0]===from && l[1]===t
 
 function draw(){
     ctx.clearRect(0,0,600,600);
-    ctx.strokeStyle="#fff"; ctx.lineWidth=8;
+    // LIGHTENED BOARD LINES FOR BETTER CONTRAST
+    ctx.strokeStyle="rgba(255,255,255,0.7)"; ctx.lineWidth=8;
     links.forEach(l=>{
         ctx.beginPath(); ctx.moveTo(points[l[0]].x,points[l[0]].y); ctx.lineTo(points[l[1]].x,points[l[1]].y); ctx.stroke();
     });
@@ -533,7 +532,7 @@ function drawPawn(pos, c1, c2, isSelected){
     let g = ctx.createRadialGradient(p.x-5,p.y-5,5,p.x,p.y,25);
     g.addColorStop(0,c1); g.addColorStop(1,c2);
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,28,0,7); ctx.fill();
-    ctx.strokeStyle = isSelected ? "white" : "rgba(255,255,255,0.3)";
+    ctx.strokeStyle = isSelected ? "white" : "rgba(255,255,255,0.6)";
     ctx.lineWidth = isSelected ? 4 : 2; ctx.stroke();
     ctx.shadowBlur = 0;
 }
